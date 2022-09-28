@@ -102,8 +102,8 @@ function copy_font_to_dest_dir() {
 }
 
 function font_install() {
-    mkdir -p "$DEST_DIR" || exit 1
-    
+    mkdir -p "$DEST_DIR" && echo || exit 1
+
     for FONT in ${FONT_LIST[@]}
     do
         echo -ne "$BLUE [ * ] Downloading ➜$GREEN ${FONT}${BLUE}..."
@@ -115,8 +115,10 @@ function font_install() {
     then
         fc-cache -f "$DEST_DIR" && {
             echo -e "\n$GREEN [ ✔ ]$BLUE fc-cache -f '$DEST_DIR' ➜$GREEN SUCCESSFUL!" 
-            echo -e "$GREEN\n Font installed on $LBLUE'$DEST_DIR'"
+            echo -e "$GREEN\n Font installed on $LBLUE'$DEST_DIR'\n"
         }
+    else
+        echo -e "$GREEN\n Font deployed on $LBLUE'$DEST_DIR'\n"
     fi
 
 }
