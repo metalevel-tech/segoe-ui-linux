@@ -106,16 +106,19 @@ function font_install() {
     
     for FONT in ${FONT_LIST[@]}
     do
+        echo -e "$BLUE [ * ] Downloading ➜$GREEN ${FONT}${BLUE}..."
         wget -q "${FONT_URL}/${FONT}?raw=true" -O "${DEST_DIR}/${FONT}" > /dev/null 2>&1
+        echo -e "\n$GREEN [ ✔ ]$BLUE SUCCESSFUL!" 
     done
 
     if [ "$FC_CACHE" = "true" ]
     then
-        fc-cache -f "$DEST_DIR" && \
-        echo -e "\n$GREEN [ ✔ ]$BLUE fc-cache -f '$DEST_DIR' ➜$GREEN SUCCESSFUL!"
+        fc-cache -f "$DEST_DIR" && {
+            echo -e "\n$GREEN [ ✔ ]$BLUE fc-cache -f '$DEST_DIR' ➜$GREEN SUCCESSFUL!" 
+            echo -e "$GREEN\n Font installed on $LBLUE'$DEST_DIR'"
+        }
     fi
 
-    echo -e "$GREEN\n Font installed on $LBLUE'$DEST_DIR'"
 }
 
 function install_wget() {
