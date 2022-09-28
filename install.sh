@@ -20,15 +20,15 @@ LCYAN='\033[01;36m'
 WHITE='\033[01;37m'
 
 # Destination directory
-#ROOT_UID=0
+# ROOT_UID=0
 : ${FONTS_DIR:="$HOME/.local/share/fonts"}
 : ${DEST_DIR:="$FONTS_DIR/Microsoft/TrueType/Segoe UI/"}
 
-#if [ "$UID" -eq "$ROOT_UID" ]; then
+# if [ "$UID" -eq "$ROOT_UID" ]; then
 #  DEST_DIR="/usr/local/share/fonts/Microsoft/TrueType/Segoe UI/"
-#else
+# else
 #  DEST_DIR="$HOME/.local/share/fonts/Microsoft/TrueType/Segoe UI/"
-#fi
+# fi
 
 # Check Internet Connection
 function cekkoneksi(){
