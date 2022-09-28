@@ -106,7 +106,7 @@ function font_install() {
     
     for FONT in ${FONT_LIST[@]}
     do
-        echo wget -q "${FONT_URL}/${FONT}?raw=true" -O "${DEST_DIR}/${FONT}" #> /dev/null 2>&1
+        wget -q "${FONT_URL}/${FONT}?raw=true" -O "${DEST_DIR}/${FONT}" > /dev/null 2>&1
     done
 
     if [ "$FC_CACHE" = "true" ]
