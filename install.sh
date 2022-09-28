@@ -79,7 +79,7 @@ function check_font() {
 }
 
 function continue_font() {
-    echo -e "$LGREEN Do you want to install Segoe-UI Font in '$DEST_DIR'? (y)es, (n)o:"
+    echo -ne "$LGREEN Do you want to install Segoe-UI Font in '$DEST_DIR'? (y)es, (n)o: "
     read  -p ' ' INPUT
     case $INPUT in
     [Yy]* ) font_install;;
@@ -89,7 +89,7 @@ function continue_font() {
 }
 
 function copy_font_to_dest_dir() {
-    echo -e "$LGREEN Do you want to copy Segoe-UI Font to the directory '$DEST_DIR'? (y)es, (n)o:"
+    echo -ne "$LGREEN Do you want to copy Segoe-UI Font to the directory '$DEST_DIR'? (y)es, (n)o: "
     read  -p ' ' INPUT
     case $INPUT in
     [Yy]* ) font_install;;
