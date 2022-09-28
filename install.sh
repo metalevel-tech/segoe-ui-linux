@@ -106,9 +106,9 @@ function font_install() {
     
     for FONT in ${FONT_LIST[@]}
     do
-        echo -ne "\n$BLUE [ * ] Downloading ➜$GREEN ${FONT}${BLUE} ... "
+        echo -ne "$BLUE [ * ] Downloading ➜$GREEN ${FONT}${BLUE}..."
         wget -q "${FONT_URL}/${FONT}?raw=true" -O "${DEST_DIR}/${FONT}" > /dev/null 2>&1
-        echo -ne "$GREEN [ ✔ ]" 
+        echo -e "$GREEN [ ✔ ]$BLUE SUCCESSFUL!" 
     done
 
     if [ "$FC_CACHE" = "true" ]
