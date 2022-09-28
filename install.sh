@@ -108,7 +108,7 @@ function font_install() {
     do
         echo -ne "$BLUE [ * ] Downloading ➜$GREEN ${FONT}${BLUE}..."
         wget -q "${FONT_URL}/${FONT}?raw=true" -O "${DEST_DIR}/${FONT}" > /dev/null 2>&1
-        echo -e "$GREEN [ ✔ ]$BLUE SUCCESSFUL!" 
+        echo -e "\t$GREEN [ ✔ ]$BLUE SUCCESSFUL!" 
     done
 
     if [ "$FC_CACHE" = "true" ]
