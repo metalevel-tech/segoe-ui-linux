@@ -112,7 +112,7 @@ function font_install() {
     wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguisb.ttf?raw=true -O "$DEST_DIR"/seguisb.ttf > /dev/null 2>&1 # semibold
     wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguisbi.ttf?raw=true -O "$DEST_DIR"/seguisbi.ttf > /dev/null 2>&1 # semibold italic
     
-    if [ "$UPDATE_CACHE" -eq "true" ]
+    if [ "$UPDATE_CACHE" = "true" ]
     then
         fc-cache -f "$DEST_DIR" && \
         echo -e "$GREEN [ ✔ ]$BLUE fc-cache -f '$DEST_DIR' ➜$GREEN SUCCESSFUL!\n"
