@@ -23,6 +23,7 @@ WHITE='\033[01;37m'
 # ROOT_UID=0
 : "${FONTS_DIR:="$HOME/.local/share/fonts"}"
 : "${DEST_DIR:="$FONTS_DIR/Microsoft/TrueType/Segoe UI/"}"
+: "${UPDATE_CACHE:="true"}"
 
 # if [ "$UID" -eq "$ROOT_UID" ]; then
 #  DEST_DIR="/usr/local/share/fonts/Microsoft/TrueType/Segoe UI/"
@@ -110,7 +111,13 @@ function font_install() {
     wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguisli.ttf?raw=true -O "$DEST_DIR"/seguisli.ttf > /dev/null 2>&1 # semilight italic
     wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguisb.ttf?raw=true -O "$DEST_DIR"/seguisb.ttf > /dev/null 2>&1 # semibold
     wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguisbi.ttf?raw=true -O "$DEST_DIR"/seguisbi.ttf > /dev/null 2>&1 # semibold italic
-    fc-cache -f "$DEST_DIR"
+    
+    if [ "$UPDATE_CACHE" -eq "true" ]
+    then
+        fc-cache -f "$DEST_DIR" && \
+        echo -e "$GREEN [ ✔ ]$BLUE fc-cache -f '$DEST_DIR' ➜$GREEN SUCCESSFUL!\n"
+    fi
+
     echo -e "$GREEN\n Font installed on $LBLUE'$DEST_DIR'"
 }
 
