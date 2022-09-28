@@ -21,7 +21,7 @@ WHITE='\033[01;37m'
 
 # Destination directory
 #ROOT_UID=0
-DEST_DIR="$HOME/.local/share/fonts/Microsoft/TrueType/Segoe UI/"
+: ${DEST_DIR:="$HOME/.local/share/fonts/Microsoft/TrueType/Segoe UI/"}
 
 #if [ "$UID" -eq "$ROOT_UID" ]; then
 #  DEST_DIR="/usr/local/share/fonts/Microsoft/TrueType/Segoe UI/"
@@ -29,7 +29,7 @@ DEST_DIR="$HOME/.local/share/fonts/Microsoft/TrueType/Segoe UI/"
 #  DEST_DIR="$HOME/.local/share/fonts/Microsoft/TrueType/Segoe UI/"
 #fi
 
-# Check Internet Conection
+# Check Internet Connection
 function cekkoneksi(){
     echo -e "$BLUE [ * ] Checking for internet connection"
     sleep 1
