@@ -71,7 +71,7 @@ function check_font() {
         continue_font
     fi
 
-    if [ ! -d "$DEST_DIR" ]
+    if [ "$?" -eq "0" ] && [ ! -d "$DEST_DIR" ]
     then
         echo -e "$RED [ X ]$RED It seems the Segoe-UI Font is installed, but the directory '$DEST_DIR' is empty!\n"
         copy_font_to_dest_dir
@@ -99,7 +99,7 @@ function copy_font_to_dest_dir() {
 }
 
 function font_install() {
-    mkdir -p "$DEST_DIR"
+    mkdir -p "$DEST_DIR" || exit 1
     wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeui.ttf?raw=true -O "$DEST_DIR"/segoeui.ttf > /dev/null 2>&1 # regular
     wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeuib.ttf?raw=true -O "$DEST_DIR"/segoeuib.ttf > /dev/null 2>&1 # bold
     wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeuii.ttf?raw=true -O "$DEST_DIR"/segoeuii.ttf > /dev/null 2>&1 # italic
