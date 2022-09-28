@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # mrbvrz - https://hasansuryaman.com
 # this is part of my basic bash learning, there may be errors in writing this program.
 
@@ -21,8 +21,8 @@ WHITE='\033[01;37m'
 
 # Destination directory
 # ROOT_UID=0
-: ${FONTS_DIR:="$HOME/.local/share/fonts"}
-: ${DEST_DIR:="$FONTS_DIR/Microsoft/TrueType/Segoe UI/"}
+: "${FONTS_DIR:="$HOME/.local/share/fonts"}"
+: "${DEST_DIR:="$FONTS_DIR/Microsoft/TrueType/Segoe UI/"}"
 
 # if [ "$UID" -eq "$ROOT_UID" ]; then
 #  DEST_DIR="/usr/local/share/fonts/Microsoft/TrueType/Segoe UI/"
@@ -31,7 +31,7 @@ WHITE='\033[01;37m'
 # fi
 
 # Check Internet Connection
-function cekkoneksi(){
+function cekkoneksi() {
     echo -e "$BLUE [ * ] Checking for internet connection"
     sleep 1
     echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 > /dev/null 2>&1
@@ -45,34 +45,41 @@ function cekkoneksi(){
     fi
 }
 
-function cekwget(){
+function cekwget() {
     echo -e "$BLUE [ * ] Checking for Wget"
     sleep 1
     which wget > /dev/null 2>&1
     if [ "$?" -eq "0" ]; then
-    echo -e "$GREEN [ ✔ ]$BLUE Wget ➜$GREEN INSTALLED\n"
+    echo -e "$GREEN [ ✔ ]$BLUE Wget ➜$GREEN INSTALLED!\n"
         sleep 1
     else
-        echo -e "$RED [ X ]$BLUE Wget ➜$RED NOT INSTALLED\n"
+        echo -e "$RED [ X ]$BLUE Wget ➜$RED NOT INSTALLED!\n"
         continueWget
     fi
 }
 
-function cekfont(){
+function cekfont() {
     echo -e "$BLUE [ * ] Checking for Segoe-UI Font"
     sleep 1
     fc-list | grep -i "Segoe UI" >/dev/null 2>&1
-    if [ "$?" -eq "0" ]; then
-    echo -e "$GREEN [ ✔ ]$BLUE Segoe-UI Font ➜$GREEN INSTALLED\n"
+    if [ "$?" -eq "0" ]
+    then
+        echo -e "$GREEN [ ✔ ]$BLUE Segoe-UI Font ➜$GREEN INSTALLED!\n"
         sleep 1
     else
-        echo -e "$RED [ X ]$BLUE Segoe-UI Font ➜$RED NOT INSTALLED\n"
+        echo -e "$RED [ X ]$BLUE Segoe-UI Font ➜$RED NOT INSTALLED!\n"
         continueFont
+    fi
+
+    if [ ! -d "$DEST_DIR" ]
+    then
+        echo -e "$RED [ X ]$RED It seems the Segoe-UI Font is installed, but the directory '$DEST_DIR' is empty!\n"
+        justCopyFont
     fi
 }
 
-function continueFont(){
-    echo -e "$LGREEN Do you want to install Segoe-UI Font? (y)es, (n)o :"
+function continueFont() {
+    echo -e "$LGREEN Do you want to install Segoe-UI Font? (y)es, (n)o:"
     read  -p ' ' INPUT
     case $INPUT in
     [Yy]* ) fontinstall;;
@@ -81,7 +88,17 @@ function continueFont(){
   esac
 }
 
-function fontinstall(){
+function justCopyFont() {
+    echo -e "$LGREEN Do you want to copy Segoe-UI Font to the directory '$DEST_DIR'? (y)es, (n)o:"
+    read  -p ' ' INPUT
+    case $INPUT in
+    [Yy]* ) fontinstall;;
+    [Nn]* ) end;;
+    * ) echo -e "$RED\n Sorry, try again."; justCopyFont;;
+  esac
+}
+
+function fontinstall() {
     mkdir -p "$DEST_DIR"
     wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeui.ttf?raw=true -O "$DEST_DIR"/segoeui.ttf > /dev/null 2>&1 # regular
     wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeuib.ttf?raw=true -O "$DEST_DIR"/segoeuib.ttf > /dev/null 2>&1 # bold
@@ -97,13 +114,13 @@ function fontinstall(){
     echo -e "$GREEN\n Font installed on $LBLUE'$DEST_DIR'"
 }
 
-function wgetinstall(){   
+function wgetinstall() {
     sleep 1
     sudo apt update > /dev/null 2>&1
     sudo apt install -y wget > /dev/null 2>&1
 }
 
-function end(){
+function end() {
     echo -e "$LPURPLE\n Bye..... ;)"
     exit 0
 }
@@ -118,7 +135,10 @@ continueWget() {
   esac
 }
 
-function banner(){
+function banner() {
+    echo "DIR: $FONTS_DIR"
+    echo "DIR: $DEST_DIR"
+
     echo -e "$LYELLOW" ""
     echo -e "                                         _    __            _   "
     echo -e "                                        (_)  / _|          | |  "
@@ -133,12 +153,11 @@ function banner(){
     echo ""
 }
 
-main(){
+function main() {
     clear
     banner
     cekkoneksi
     cekwget
     cekfont
 }
-
 main
