@@ -2,7 +2,7 @@
 # mrbvrz - https://hasansuryaman.com
 # this is part of my basic bash learning, there may be errors in writing this program.
 
-# Colours Variables
+# Colors Variables
 RESTORE='\033[0m'
 RED='\033[00;31m'
 GREEN='\033[00;32m'
@@ -10,7 +10,7 @@ YELLOW='\033[00;33m'
 BLUE='\033[00;34m'
 PURPLE='\033[00;35m'
 CYAN='\033[00;36m'
-LIGHTGRAY='\033[00;37m'
+LGRAY='\033[00;37m'
 LRED='\033[01;31m'
 LGREEN='\033[01;32m'
 LYELLOW='\033[01;33m'
@@ -31,7 +31,7 @@ WHITE='\033[01;37m'
 # fi
 
 # Check Internet Connection
-function cekkoneksi() {
+function check_internet() {
     echo -e "$BLUE [ * ] Checking for internet connection"
     sleep 1
     echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 > /dev/null 2>&1
@@ -45,7 +45,7 @@ function cekkoneksi() {
     fi
 }
 
-function cekwget() {
+function check_wget() {
     echo -e "$BLUE [ * ] Checking for Wget"
     sleep 1
     which wget > /dev/null 2>&1
@@ -54,11 +54,11 @@ function cekwget() {
         sleep 1
     else
         echo -e "$RED [ X ]$BLUE Wget ➜$RED NOT INSTALLED!\n"
-        continueWget
+        continue_wget
     fi
 }
 
-function cekfont() {
+function check_font() {
     echo -e "$BLUE [ * ] Checking for Segoe-UI Font"
     sleep 1
     fc-list | grep -i "Segoe UI" >/dev/null 2>&1
@@ -68,37 +68,37 @@ function cekfont() {
         sleep 1
     else
         echo -e "$RED [ X ]$BLUE Segoe-UI Font ➜$RED NOT INSTALLED!\n"
-        continueFont
+        continue_font
     fi
 
     if [ ! -d "$DEST_DIR" ]
     then
         echo -e "$RED [ X ]$RED It seems the Segoe-UI Font is installed, but the directory '$DEST_DIR' is empty!\n"
-        justCopyFont
+        copy_font_to_dest_dir
     fi
 }
 
-function continueFont() {
+function continue_font() {
     echo -e "$LGREEN Do you want to install Segoe-UI Font? (y)es, (n)o:"
     read  -p ' ' INPUT
     case $INPUT in
-    [Yy]* ) fontinstall;;
+    [Yy]* ) font_install;;
     [Nn]* ) end;;
-    * ) echo -e "$RED\n Sorry, try again."; continueFont;;
+    * ) echo -e "$RED\n Sorry, try again."; continue_font;;
   esac
 }
 
-function justCopyFont() {
+function copy_font_to_dest_dir() {
     echo -e "$LGREEN Do you want to copy Segoe-UI Font to the directory '$DEST_DIR'? (y)es, (n)o:"
     read  -p ' ' INPUT
     case $INPUT in
-    [Yy]* ) fontinstall;;
+    [Yy]* ) font_install;;
     [Nn]* ) end;;
-    * ) echo -e "$RED\n Sorry, try again."; justCopyFont;;
+    * ) echo -e "$RED\n Sorry, try again."; copy_font_to_dest_dir;;
   esac
 }
 
-function fontinstall() {
+function font_install() {
     mkdir -p "$DEST_DIR"
     wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeui.ttf?raw=true -O "$DEST_DIR"/segoeui.ttf > /dev/null 2>&1 # regular
     wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeuib.ttf?raw=true -O "$DEST_DIR"/segoeuib.ttf > /dev/null 2>&1 # bold
@@ -114,7 +114,7 @@ function fontinstall() {
     echo -e "$GREEN\n Font installed on $LBLUE'$DEST_DIR'"
 }
 
-function wgetinstall() {
+function install_wget() {
     sleep 1
     sudo apt update > /dev/null 2>&1
     sudo apt install -y wget > /dev/null 2>&1
@@ -125,13 +125,13 @@ function end() {
     exit 0
 }
 
-continueWget() {
+continue_wget() {
   echo -e "$LGREEN Do you want to install Wget? (y)es, (n)o :"
   read  -p ' ' INPUT
   case $INPUT in
-    [Yy]* ) wgetinstall;;
+    [Yy]* ) install_wget;;
     [Nn]* ) end;;
-    * ) echo -e "$RED\n Sorry, try again."; continueWget;;
+    * ) echo -e "$RED\n Sorry, try again."; continue_wget;;
   esac
 }
 
@@ -156,8 +156,8 @@ function banner() {
 function main() {
     clear
     banner
-    cekkoneksi
-    cekwget
-    cekfont
+    check_internet
+    check_wget
+    check_font
 }
 main
