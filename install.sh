@@ -23,7 +23,9 @@ WHITE='\033[01;37m'
 # ROOT_UID=0
 : "${FONTS_DIR:="$HOME/.local/share/fonts"}"
 : "${DEST_DIR:="$FONTS_DIR/Microsoft/TrueType/Segoe UI/"}"
-: "${UPDATE_CACHE:="true"}"
+: "${FC_CACHE:="true"}"
+: "${FONT_URL:="https://github.com/metalevel-tech/segoe-ui/raw/update/font"}"
+: "${FONT_LIST:="segoeuib.ttf" "segoeuii.ttf" "segoeuil.ttf" "segoeuisl.ttf" "segoeui.ttf" "segoeuiz.ttf" "seguili.ttf" "seguisbi.ttf" "seguisb.ttf" "seguisli.ttf"}"
 
 # if [ "$UID" -eq "$ROOT_UID" ]; then
 #  DEST_DIR="/usr/local/share/fonts/Microsoft/TrueType/Segoe UI/"
@@ -80,7 +82,7 @@ function check_font() {
 }
 
 function continue_font() {
-    echo -ne "$LGREEN Do you want to install Segoe-UI Font in '$DEST_DIR'? (y)es, (n)o: "
+    echo -ne "$LGREEN Do you want to install Segoe-UI Font in '$DEST_DIR'? (y)es, (n)o:"
     read  -p ' ' INPUT
     case $INPUT in
     [Yy]* ) font_install;;
@@ -90,7 +92,7 @@ function continue_font() {
 }
 
 function copy_font_to_dest_dir() {
-    echo -ne "$LGREEN Do you want to copy Segoe-UI Font to the directory '$DEST_DIR'? (y)es, (n)o: "
+    echo -ne "$LGREEN Do you want to copy Segoe-UI Font to the directory '$DEST_DIR'? (y)es, (n)o:"
     read  -p ' ' INPUT
     case $INPUT in
     [Yy]* ) font_install;;
@@ -101,21 +103,16 @@ function copy_font_to_dest_dir() {
 
 function font_install() {
     mkdir -p "$DEST_DIR" || exit 1
-    wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeui.ttf?raw=true -O "$DEST_DIR"/segoeui.ttf > /dev/null 2>&1 # regular
-    wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeuib.ttf?raw=true -O "$DEST_DIR"/segoeuib.ttf > /dev/null 2>&1 # bold
-    wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeuii.ttf?raw=true -O "$DEST_DIR"/segoeuii.ttf > /dev/null 2>&1 # italic
-    wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeuiz.ttf?raw=true -O "$DEST_DIR"/segoeuiz.ttf > /dev/null 2>&1 # bold italic
-    wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeuil.ttf?raw=true -O "$DEST_DIR"/segoeuil.ttf > /dev/null 2>&1 # light
-    wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguili.ttf?raw=true -O "$DEST_DIR"/seguili.ttf > /dev/null 2>&1 # light italic
-    wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeuisl.ttf?raw=true -O "$DEST_DIR"/segoeuisl.ttf > /dev/null 2>&1 # semilight
-    wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguisli.ttf?raw=true -O "$DEST_DIR"/seguisli.ttf > /dev/null 2>&1 # semilight italic
-    wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguisb.ttf?raw=true -O "$DEST_DIR"/seguisb.ttf > /dev/null 2>&1 # semibold
-    wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguisbi.ttf?raw=true -O "$DEST_DIR"/seguisbi.ttf > /dev/null 2>&1 # semibold italic
     
-    if [ "$UPDATE_CACHE" = "true" ]
+    for FONT in ${FONT_LIST[@]}
+    do
+        echo wget -q "${FONT_URL}/${FONT}?raw=true" -O "${DEST_DIR}/${FONT}" #> /dev/null 2>&1
+    done
+
+    if [ "$FC_CACHE" = "true" ]
     then
         fc-cache -f "$DEST_DIR" && \
-        echo -e "$GREEN [ ✔ ]$BLUE fc-cache -f '$DEST_DIR' ➜$GREEN SUCCESSFUL!\n"
+        echo -e "\n$GREEN [ ✔ ]$BLUE fc-cache -f '$DEST_DIR' ➜$GREEN SUCCESSFUL!"
     fi
 
     echo -e "$GREEN\n Font installed on $LBLUE'$DEST_DIR'"
@@ -133,7 +130,7 @@ function end() {
 }
 
 continue_wget() {
-  echo -e "$LGREEN Do you want to install Wget? (y)es, (n)o :"
+  echo -ne "$LGREEN Do you want to install Wget? (y)es, (n)o :"
   read  -p ' ' INPUT
   case $INPUT in
     [Yy]* ) install_wget;;
