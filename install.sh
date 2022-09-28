@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # mrbvrz - https://hasansuryaman.com
 # this is part of my basic bash learning, there may be errors in writing this program.
 
@@ -37,7 +37,7 @@ function check_internet() {
     echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 > /dev/null 2>&1
     if [ $? -ne 0 ]; then
         echo -e "$RED [ X ]$BLUE Internet Connection ➜$RED OFFLINE!\n";
-        echo -e "$RED Sorry, you really need an internet connection...."
+        echo -e "$RED Sorry, you really need an internet connection..."
         exit 0
     else
         echo -e "$GREEN [ ✔ ]$BLUE Internet Connection ➜$GREEN CONNECTED!\n";
@@ -121,7 +121,7 @@ function install_wget() {
 }
 
 function end() {
-    echo -e "$LPURPLE\n Bye..... ;)"
+    echo -e "$LPURPLE\n Bye... ;)"
     exit 0
 }
 
@@ -136,9 +136,6 @@ continue_wget() {
 }
 
 function banner() {
-    echo "DIR: $FONTS_DIR"
-    echo "DIR: $DEST_DIR"
-
     echo -e "$LYELLOW" ""
     echo -e "                                         _    __            _   "
     echo -e "                                        (_)  / _|          | |  "
@@ -149,7 +146,8 @@ function banner() {
     echo -e "            __/ |                                               "
     echo -e "           |___/             $LPURPLE mrbvrz$LCYAN -$RED https://hasansuryaman.com        "
     echo ""
-    echo -e "$LYELLOW ---------------------------------------------------------------"
+    echo -e "$LYELLOW --------------------------------------------------------------- $RESTORE"
+    echo -e " FONTS_DIR: $FONTS_DIR"
     echo ""
 }
 
