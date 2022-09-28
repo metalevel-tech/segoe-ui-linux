@@ -79,7 +79,7 @@ function check_font() {
 }
 
 function continue_font() {
-    echo -e "$LGREEN Do you want to install Segoe-UI Font? (y)es, (n)o:"
+    echo -e "$LGREEN Do you want to install Segoe-UI Font in '$DEST_DIR'? (y)es, (n)o:"
     read  -p ' ' INPUT
     case $INPUT in
     [Yy]* ) font_install;;
