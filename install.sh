@@ -1,6 +1,5 @@
 #!/bin/bash
-# mrbvrz - https://hasansuryaman.com
-# this is part of my basic bash learning, there may be errors in writing this program.
+# Simplified version by Spas Z. Spasov based on the work of "mrbvrz - https://hasansuryaman.com"
 
 # Colors Variables
 RESTORE='\033[0m'
@@ -20,30 +19,23 @@ LCYAN='\033[01;36m'
 WHITE='\033[01;37m'
 
 # Destination directory
-# ROOT_UID=0
 : "${FONTS_DIR:="$HOME/.local/share/fonts"}"
 : "${DEST_DIR:="$FONTS_DIR/Microsoft/TrueType/Segoe UI/"}"
 : "${FC_CACHE:="true"}"
-: "${FONT_URL:="https://github.com/metalevel-tech/segoe-ui/raw/update/font"}"
-: "${FONT_LIST:="segoeuib.ttf" "segoeuii.ttf" "segoeuil.ttf" "segoeuisl.ttf" "segoeui.ttf" "segoeuiz.ttf" "seguili.ttf" "seguisbi.ttf" "seguisb.ttf" "seguisli.ttf"}"
-
-# if [ "$UID" -eq "$ROOT_UID" ]; then
-#  DEST_DIR="/usr/local/share/fonts/Microsoft/TrueType/Segoe UI/"
-# else
-#  DEST_DIR="$HOME/.local/share/fonts/Microsoft/TrueType/Segoe UI/"
-# fi
+: "${FONT_URL:="https://github.com/pa4080/segoe-ui-linux/raw/mod/font"}"
+: "${FONT_LIST:="segoeuib.ttf" "segoeuii.ttf" "segoeuil.ttf" "segoeuisl.ttf" "segoeui.ttf" "segoeuiz.ttf" "seguibli.ttf" "seguibl.ttf" "seguiemj.ttf" "seguihis.ttf" "seguili.ttf" "seguisbi.ttf" "seguisb.ttf" "seguisli.ttf" "seguisym.ttf"}"
 
 # Check Internet Connection
 function check_internet() {
     echo -e "$BLUE [ * ] Checking for internet connection"
     sleep 1
-    echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 > /dev/null 2>&1
+    echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "$RED [ X ]$BLUE Internet Connection ➜$RED OFFLINE!\n";
+        echo -e "$RED [ X ]$BLUE Internet Connection ➜$RED OFFLINE!\n"
         echo -e "$RED Sorry, you really need an internet connection..."
         exit 0
     else
-        echo -e "$GREEN [ ✔ ]$BLUE Internet Connection ➜$GREEN CONNECTED!\n";
+        echo -e "$GREEN [ ✔ ]$BLUE Internet Connection ➜$GREEN CONNECTED!\n"
         sleep 1
     fi
 }
@@ -51,9 +43,9 @@ function check_internet() {
 function check_wget() {
     echo -e "$BLUE [ * ] Checking for Wget"
     sleep 1
-    which wget > /dev/null 2>&1
+    which wget >/dev/null 2>&1
     if [ "$?" -eq "0" ]; then
-    echo -e "$GREEN [ ✔ ]$BLUE Wget ➜$GREEN INSTALLED!\n"
+        echo -e "$GREEN [ ✔ ]$BLUE Wget ➜$GREEN INSTALLED!\n"
         sleep 1
     else
         echo -e "$RED [ X ]$BLUE Wget ➜$RED NOT INSTALLED!\n"
@@ -65,8 +57,7 @@ function check_font() {
     echo -e "$BLUE [ * ] Checking for Segoe-UI Font"
     sleep 1
     fc-list | grep -i "Segoe UI" >/dev/null 2>&1
-    if [ "$?" -eq "0" ]
-    then
+    if [ "$?" -eq "0" ]; then
         echo -e "$GREEN [ ✔ ]$BLUE Segoe-UI Font ➜$GREEN INSTALLED!\n"
         sleep 1
     else
@@ -74,8 +65,7 @@ function check_font() {
         continue_font
     fi
 
-    if [ "$?" -eq "0" ] && [ ! -d "$DEST_DIR" ]
-    then
+    if [ "$?" -eq "0" ] && [ ! -d "$DEST_DIR" ]; then
         echo -e "$RED [ X ]$RED It seems the Segoe-UI Font is installed, but the directory '$DEST_DIR' is empty!\n"
         copy_font_to_dest_dir
     fi
@@ -83,38 +73,42 @@ function check_font() {
 
 function continue_font() {
     echo -ne "$LGREEN Do you want to install Segoe-UI Font in '$DEST_DIR'? (y)es, (n)o:"
-    read  -p ' ' INPUT
+    read -p ' ' INPUT
     case $INPUT in
-    [Yy]* ) font_install;;
-    [Nn]* ) end;;
-    * ) echo -e "$RED\n Sorry, try again."; continue_font;;
-  esac
+    [Yy]*) font_install ;;
+    [Nn]*) end ;;
+    *)
+        echo -e "$RED\n Sorry, try again."
+        continue_font
+        ;;
+    esac
 }
 
 function copy_font_to_dest_dir() {
     echo -ne "$LGREEN Do you want to copy Segoe-UI Font to the directory '$DEST_DIR'? (y)es, (n)o:"
-    read  -p ' ' INPUT
+    read -p ' ' INPUT
     case $INPUT in
-    [Yy]* ) font_install;;
-    [Nn]* ) end;;
-    * ) echo -e "$RED\n Sorry, try again."; copy_font_to_dest_dir;;
-  esac
+    [Yy]*) font_install ;;
+    [Nn]*) end ;;
+    *)
+        echo -e "$RED\n Sorry, try again."
+        copy_font_to_dest_dir
+        ;;
+    esac
 }
 
 function font_install() {
     mkdir -p "$DEST_DIR" && echo || exit 1
 
-    for FONT in ${FONT_LIST[@]}
-    do
+    for FONT in ${FONT_LIST[@]}; do
         echo -ne "$BLUE [ * ] Downloading ➜$GREEN ${FONT}${BLUE}..."
-        wget -q "${FONT_URL}/${FONT}?raw=true" -O "${DEST_DIR}/${FONT}" > /dev/null 2>&1
-        echo -e "\t$GREEN [ ✔ ]$BLUE SUCCESSFUL!" 
+        wget -q "${FONT_URL}/${FONT}?raw=true" -O "${DEST_DIR}/${FONT}" >/dev/null 2>&1
+        echo -e "\t$GREEN [ ✔ ]$BLUE SUCCESSFUL!"
     done
 
-    if [ "$FC_CACHE" = "true" ]
-    then
+    if [ "$FC_CACHE" = "true" ]; then
         fc-cache -f "$DEST_DIR" && {
-            echo -e "\n$GREEN [ ✔ ]$BLUE fc-cache -f '$DEST_DIR' ➜$GREEN SUCCESSFUL!" 
+            echo -e "\n$GREEN [ ✔ ]$BLUE fc-cache -f '$DEST_DIR' ➜$GREEN SUCCESSFUL!"
             echo -e "$GREEN\n Font installed on $LBLUE'$DEST_DIR'\n"
         }
     else
@@ -125,8 +119,8 @@ function font_install() {
 
 function install_wget() {
     sleep 1
-    sudo apt update > /dev/null 2>&1
-    sudo apt install -y wget > /dev/null 2>&1
+    sudo apt update >/dev/null 2>&1
+    sudo apt install -y wget >/dev/null 2>&1
 }
 
 function end() {
@@ -135,13 +129,16 @@ function end() {
 }
 
 continue_wget() {
-  echo -ne "$LGREEN Do you want to install Wget? (y)es, (n)o :"
-  read  -p ' ' INPUT
-  case $INPUT in
-    [Yy]* ) install_wget;;
-    [Nn]* ) end;;
-    * ) echo -e "$RED\n Sorry, try again."; continue_wget;;
-  esac
+    echo -ne "$LGREEN Do you want to install Wget? (y)es, (n)o :"
+    read -p ' ' INPUT
+    case $INPUT in
+    [Yy]*) install_wget ;;
+    [Nn]*) end ;;
+    *)
+        echo -e "$RED\n Sorry, try again."
+        continue_wget
+        ;;
+    esac
 }
 
 function banner() {
